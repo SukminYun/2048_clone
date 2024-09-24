@@ -1,9 +1,12 @@
 import Tile from './Tile.tsx';
+type BoardType = {
+  board: number[][];
+};
 
-const Board = ({ board }) => {
+const Board = ({ board }: BoardType) => {
   return (
     <div className="board">
-      {board.map((row, i) =>
+      {board.map((row: number[], i: number) =>
         row.map((value, j) => <Tile key={`${i}-${j}`} value={value} />),
       )}
     </div>
