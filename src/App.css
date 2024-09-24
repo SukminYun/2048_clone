@@ -27,8 +27,8 @@
 }
 
 .origin-link {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
 }
 
 .board {
@@ -98,7 +98,7 @@
 
 .score-container {
   display: block;
-  margin: 10px auto;
+  margin: 15px auto;
   padding: 10px 30px;
   font-size: 20px;
   background-color: #7cbff0;
@@ -109,7 +109,7 @@
 
 button {
   display: block;
-  margin: 10px auto;
+  margin: 15px auto;
   padding: 10px 40px;
   font-size: 20px;
   background-color: #7cbff0;

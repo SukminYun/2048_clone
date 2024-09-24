@@ -9,7 +9,7 @@ function App() {
         <div className="title">2048 Game</div>
         <a href="https://play2048.co">
           <img
-            src="./assets/2048.png"
+            src="./src/assets/2048.png"
             className="origin-link"
             alt="Original game link"
           />
