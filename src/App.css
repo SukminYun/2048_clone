@@ -5,21 +5,6 @@
   text-align: center;
 }
 
-.container {
-  width: 100%;
-  padding: 0 15px;
-  max-width: 320px;
-  margin: 0 auto;
-}
-
-.container.upper {
-  margin-top: 15px;
-  margin-bottom: 15px;
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-}
-
 .title {
   font-size: 50px;
   font-weight: bold;
@@ -34,7 +19,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 15px;
-  background-color: #bbada0;
+  background-color: #7cbff0;
   border-radius: 6px;
   padding: 15px;
 }
@@ -42,7 +27,7 @@
 .tile {
   width: 100px;
   height: 100px;
-  background-color: #cdc1b4;
+  background-color: #eefcff;
   border-radius: 3px;
   display: flex;
   justify-content: center;
@@ -53,40 +38,53 @@
 }
 
 .tile-2 {
-  background-color: #eee4da;
+  background-color: #aae7ff;
 }
 .tile-4 {
-  background-color: #ede0c8;
+  background-color: #bbe5ff;
 }
 .tile-8 {
-  background-color: #f2b179;
-  color: #f9f6f2;
+  background-color: #ccddff;
 }
 .tile-16 {
-  background-color: #f59563;
-  color: #f9f6f2;
+  background-color: #ddccff;
 }
 .tile-32 {
-  background-color: #f67c5f;
-  color: #f9f6f2;
+  background-color: #eebbff;
 }
 .tile-64 {
-  background-color: #f65e3b;
-  color: #f9f6f2;
+  background-color: #ffccff;
 }
 .tile-128 {
-  background-color: #edcf72;
-  color: #f9f6f2;
+  background-color: #ddccff;
 }
 
 .game-message {
+  width: 20%;
+  height: 75px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  color: #2c2825;
   text-align: center;
   font-size: 48px;
   font-weight: bold;
+  border-radius: 20px;
+  border: 4px solid #49abf1;
+}
+
+.score-container {
+  width: 30%;
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: #49abf1;
+  color: #f9f6f2;
+  border: none;
+  border-radius: 10px;
 }
 
 button {
@@ -94,9 +92,9 @@ button {
   margin: 20px auto;
   padding: 10px 20px;
   font-size: 18px;
-  background-color: #8f7a66;
+  background-color: #49abf1;
   color: #f9f6f2;
   border: none;
-  border-radius: 3px;
+  border-radius: 10px;
   cursor: pointer;
 }
