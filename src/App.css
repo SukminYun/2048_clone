@@ -5,14 +5,30 @@
   text-align: center;
 }
 
+.game {
+  display: flex;
+  flex-direction: column;
+}
+
 .title {
-  font-size: 50px;
+  font-size: 60px;
   font-weight: bold;
+}
+
+.header {
+  display: flex;
+  flex-direction: left;
+  justify-content: space-evenly;
 }
 
 .game {
   width: 500px;
   margin: 0 auto;
+}
+
+.origin-link {
+  width: 60px;
+  height: 60px;
 }
 
 .board {
@@ -59,6 +75,11 @@
   background-color: #ddccff;
 }
 
+.game-header {
+  display: flex;
+  flex-direction: left;
+}
+
 .game-message {
   width: 20%;
   height: 75px;
@@ -76,25 +97,24 @@
 }
 
 .score-container {
-  width: 30%;
   display: block;
-  margin: 20px auto;
-  padding: 10px 20px;
-  font-size: 18px;
-  background-color: #49abf1;
+  margin: 10px auto;
+  padding: 10px 30px;
+  font-size: 20px;
+  background-color: #7cbff0;
   color: #f9f6f2;
   border: none;
-  border-radius: 10px;
+  border-radius: 7px;
 }
 
 button {
   display: block;
-  margin: 20px auto;
-  padding: 10px 20px;
-  font-size: 18px;
-  background-color: #49abf1;
+  margin: 10px auto;
+  padding: 10px 40px;
+  font-size: 20px;
+  background-color: #7cbff0;
   color: #f9f6f2;
   border: none;
-  border-radius: 10px;
+  border-radius: 7px;
   cursor: pointer;
 }
