@@ -6,6 +6,7 @@ type BoardType = number[][];
 const Game = () => {
   const [board, setBoard] = useState<BoardType>(initializeBoard());
   const [score, setScore] = useState<number>(0);
+  const [bscore, setBscore] = useState<number>(0);
   const [gameOver, setGameOver] = useState(false);
   const [win, setWin] = useState(false);
 
@@ -36,7 +37,11 @@ const Game = () => {
         newboard = addNewTile(newboard as BoardType);
         setBoard(newboard);
         setScore(calculateScore(newboard));
+        if (calculateScore(newboard) >= bscore) {
+          setBscore(calculateScore(newboard));
+        }
       }
+
       if (isGameOver(newboard as BoardType)) {
         setGameOver(true);
       }
@@ -53,11 +58,10 @@ const Game = () => {
   });
 
   function initializeBoard(): BoardType {
-    const newBoard = Array(4)
+    let newBoard = Array(4)
       .fill(0)
       .map(() => Array<number>(4).fill(0));
-    addNewTile(newBoard);
-    addNewTile(newBoard);
+    newBoard = addNewTile(addNewTile(newBoard));
     return newBoard;
   }
 
@@ -92,7 +96,6 @@ const Game = () => {
       const [row, col] = selectedCell;
       const setv = Math.random() < 0.8 ? 2 : 4;
       const newGrid = setTail(brd, row, col, setv);
-
       return newGrid;
     }
     return brd;
@@ -120,7 +123,7 @@ const Game = () => {
         if (
           x > 0 &&
           newboard[j]?.[x - 1] === newboard[j]?.[x] &&
-          isMerge[j]?.[x - 1] !== 1
+          isMerge[j]?.[x - 1] === 0
         ) {
           newboard = setTail(
             newboard,
@@ -158,12 +161,12 @@ const Game = () => {
         if (
           x < 3 &&
           newboard[j]?.[x + 1] === newboard[j]?.[x] &&
-          isMerge[j]?.[x + 1] !== 1
+          isMerge[j]?.[x + 1] === 0
         ) {
           newboard = setTail(
             newboard,
             j,
-            x - 1,
+            x + 1,
             (newboard[j]?.[x + 1] as number) * 2,
           );
           newboard = setTail(newboard, j, x, 0);
@@ -181,7 +184,7 @@ const Game = () => {
       .map(() => Array<number>(4).fill(0));
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 4; j++) {
-        if (newboard[j]?.[i] === 0) continue;
+        if (newboard[i]?.[j] === 0) continue;
         let y = i;
 
         // 0 안나올 때까지 위쪽으로 한칸씩
@@ -195,7 +198,7 @@ const Game = () => {
         if (
           y > 0 &&
           newboard[y - 1]?.[j] === newboard[y]?.[j] &&
-          isMerge[y - 1]?.[j] !== 1
+          isMerge[y - 1]?.[j] === 0
         ) {
           newboard = setTail(
             newboard,
@@ -216,9 +219,9 @@ const Game = () => {
     let isMerge = Array(4)
       .fill(0)
       .map(() => Array<number>(4).fill(0));
-    for (let i = 3; i > 0; i--) {
+    for (let i = 3; i >= 0; i--) {
       for (let j = 0; j < 4; j++) {
-        if (newboard[j]?.[i] === 0) continue;
+        if (newboard[i]?.[j] === 0) continue;
         let y = i;
 
         // 0 안나올 때까지 아래쪽으로 한칸씩
@@ -232,13 +235,13 @@ const Game = () => {
         if (
           y < 3 &&
           newboard[y + 1]?.[j] === newboard[y]?.[j] &&
-          isMerge[y + 1]?.[j] !== 1
+          isMerge[y + 1]?.[j] === 0
         ) {
           newboard = setTail(
             newboard,
             y + 1,
             j,
-            (newboard[y - 1]?.[j] as number) * 2,
+            (newboard[y + 1]?.[j] as number) * 2,
           );
           newboard = setTail(newboard, y, j, 0);
           isMerge = setTail(isMerge, y + 1, j, 1);
@@ -293,11 +296,12 @@ const Game = () => {
     <div className="game">
       <div className="game-header">
         <div className="score-container">Score: {score}</div>
+        <div className="score-container">Best: {bscore}</div>
+        <button onClick={restartGame}>New Game</button>
       </div>
       <Board board={board} />
       {gameOver && <div className="game-message">Game Over!</div>}
       {win && <div className="game-message">You Win!</div>}
-      <button onClick={restartGame}>New Game</button>
     </div>
   );
 };
