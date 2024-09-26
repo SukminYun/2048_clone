@@ -257,7 +257,7 @@ const Game = () => {
   }
 
   function isWin(brd: BoardType): boolean {
-    return brd.some((row) => row.some((cell) => cell >= 128000));
+    return brd.some((row) => row.some((cell) => cell >= 128));
   }
 
   function isGameOver(brd: BoardType): boolean {
