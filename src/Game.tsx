@@ -37,6 +37,7 @@ const Game = () => {
         newboard = addNewTile(newboard as BoardType);
         setBoard(newboard);
         setScore(calculateScore(newboard));
+
         if (calculateScore(newboard) >= bscore) {
           setBscore(calculateScore(newboard));
         }
@@ -256,32 +257,36 @@ const Game = () => {
   }
 
   function isWin(brd: BoardType): boolean {
-    return brd.some((row) => row.some((cell) => cell >= 128));
+    return brd.some((row) => row.some((cell) => cell >= 128000));
   }
 
   function isGameOver(brd: BoardType): boolean {
-    const size = brd.length;
-
-    for (let i = 0; i < size; i++) {
-      for (let j = 0; j < size; j++) {
+    // 0이 있는지 확인 -> 있으면 게임 안끝남
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 4; j++) {
         if (brd[i]?.[j] === 0) {
           return false;
         }
       }
     }
 
-    for (let i = 0; i < size; i++) {
-      for (let j = 0; j < size; j++) {
-        const current = board[i]?.[j];
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        const current = brd[i]?.[j];
 
-        if (j < size - 1 && current === board[i]?.[j + 1]) {
+        if (current === brd[i]?.[j + 1]) {
           return false;
         }
-        if (i < size - 1 && current === board[i + 1]?.[j]) {
+        if (current === brd[i + 1]?.[j]) {
           return false;
         }
       }
     }
+
+    if (brd[3]?.[3] === brd[2]?.[3] || brd[3]?.[3] === brd[3]?.[2]) {
+      return false;
+    }
+
     return true;
   }
 
