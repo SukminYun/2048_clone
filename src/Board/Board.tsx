@@ -1,4 +1,4 @@
-import Tile from './Tile.tsx';
+import Tile from '../Tile/Tile.tsx';
 type BoardType = {
   board: number[][];
 };
