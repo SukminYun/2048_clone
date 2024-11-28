@@ -1,16 +1,14 @@
-import './App.css';
-
 import Game from './Game.tsx';
 
 function App() {
   return (
-    <div className="game">
-      <div className="header">
-        <div className="title">2048 Game</div>
+    <div className="flex flex-col items-center">
+      <div className="flex flex-row w-96 justify-evenly">
+        <div className="text-4xl font-bold">2048 Game</div>
         <a href="https://play2048.co">
           <img
             src="./src/assets/2048.png"
-            className="origin-link"
+            className="w-20 h-20"
             alt="Original game link"
           />
         </a>

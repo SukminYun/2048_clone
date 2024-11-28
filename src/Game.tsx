@@ -298,15 +298,32 @@ const Game = () => {
   }
 
   return (
-    <div className="game">
-      <div className="game-header">
-        <div className="score-container">Score: {score}</div>
-        <div className="score-container">Best: {bscore}</div>
-        <button onClick={restartGame}>New Game</button>
+    <div className="w-100 mx-auto">
+      <div className="flex justify-between">
+        <div className="block mx-auto my-4 px-8 py-2 text-lg bg-blue-400 text-white rounded">
+          Score: {score}
+        </div>
+        <div className="block mx-auto my-4 px-8 py-2 text-lg bg-blue-400 text-white rounded">
+          Best: {bscore}
+        </div>
+        <button
+          className="block mx-auto my-4 px-8 py-2 text-lg bg-blue-400 text-white rounded"
+          onClick={restartGame}
+        >
+          New Game
+        </button>
       </div>
       <Board board={board} />
-      {gameOver && <div className="game-message">Game Over!</div>}
-      {win && <div className="game-message">You Win!</div>}
+      {gameOver && (
+        <div className="w-1/5 h-20 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white text-gray-800 text-center text-4xl font-bold rounded-lg border-4 border-blue-400">
+          Game Over!
+        </div>
+      )}
+      {win && (
+        <div className="w-1/5 h-20 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white text-gray-800 text-center text-4xl font-bold rounded-lg border-4 border-blue-400">
+          You Win!
+        </div>
+      )}
     </div>
   );
 };
