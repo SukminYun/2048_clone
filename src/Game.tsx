@@ -1,6 +1,19 @@
 import { useEffect, useState } from 'react';
 
-import Board from './Board.tsx';
+import Board from './Board/Board.tsx';
+import {
+  calculateScore,
+  initializeBoard,
+  isGameOver,
+  isWin,
+} from './Board/boardControler.tsx';
+import {
+  addNewTile,
+  moveDown,
+  moveLeft,
+  moveRight,
+  moveUp,
+} from './Tile/moveTile.tsx';
 type BoardType = number[][];
 
 const Game = () => {
@@ -57,238 +70,6 @@ const Game = () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
   });
-
-  function initializeBoard(): BoardType {
-    let newBoard = Array(4)
-      .fill(0)
-      .map(() => Array<number>(4).fill(0));
-    newBoard = addNewTile(addNewTile(newBoard));
-    return newBoard;
-  }
-
-  // 주어진 row, col에 value를 설정
-  function setTail(
-    brd: number[][],
-    row: number,
-    col: number,
-    value: number,
-  ): number[][] {
-    return brd.map((Row, rowIndex) =>
-      Row.map((cell, colIndex) =>
-        rowIndex === row && colIndex === col ? value : cell,
-      ),
-    );
-  }
-
-  function addNewTile(brd: BoardType): BoardType {
-    const emptyCells: [number, number][] = [];
-    for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 4; j++) {
-        if (brd[i]?.[j] === 0) {
-          emptyCells.push([i, j]);
-        }
-      }
-    }
-
-    if (emptyCells.length === 0) return brd;
-    const randomIndex = Math.floor(Math.random() * emptyCells.length);
-    const selectedCell = emptyCells[randomIndex];
-    if (selectedCell !== undefined) {
-      const [row, col] = selectedCell;
-      const setv = Math.random() < 0.8 ? 2 : 4;
-      const newGrid = setTail(brd, row, col, setv);
-      return newGrid;
-    }
-    return brd;
-  }
-
-  function moveLeft(grid: BoardType): BoardType {
-    let newboard = grid.map((line) => [...line]);
-    let isMerge = Array(4)
-      .fill(0)
-      .map(() => Array<number>(4).fill(0));
-
-    for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 4; j++) {
-        if (newboard[j]?.[i] === 0) continue;
-        let x = i;
-
-        // 0 안나올 때까지 왼쪽으로 한칸씩
-        while (x > 0 && newboard[j]?.[x - 1] === 0) {
-          newboard = setTail(newboard, j, x - 1, newboard[j]?.[x] as number);
-          newboard = setTail(newboard, j, x, 0);
-          x--;
-        }
-
-        // 합치기 단계 (합쳐진 곳에서 안합쳐지도록)
-        if (
-          x > 0 &&
-          newboard[j]?.[x - 1] === newboard[j]?.[x] &&
-          isMerge[j]?.[x - 1] === 0
-        ) {
-          newboard = setTail(
-            newboard,
-            j,
-            x - 1,
-            (newboard[j]?.[x - 1] as number) * 2,
-          );
-          newboard = setTail(newboard, j, x, 0);
-          isMerge = setTail(isMerge, j, x - 1, 1);
-        }
-      }
-    }
-    return newboard;
-  }
-
-  function moveRight(grid: BoardType): BoardType {
-    let newboard = grid.map((line) => [...line]);
-    let isMerge = Array(4)
-      .fill(0)
-      .map(() => Array<number>(4).fill(0));
-
-    for (let i = 3; i >= 0; i--) {
-      for (let j = 0; j < 4; j++) {
-        if (newboard[j]?.[i] === 0) continue;
-        let x = i;
-
-        // 0 안나올 때까지 오른쪽으로 한칸씩
-        while (x < 3 && newboard[j]?.[x + 1] === 0) {
-          newboard = setTail(newboard, j, x + 1, newboard[j]?.[x] as number);
-          newboard = setTail(newboard, j, x, 0);
-          x++;
-        }
-
-        // 합치기 단계 (합쳐진 곳에서 안합쳐지도록)
-        if (
-          x < 3 &&
-          newboard[j]?.[x + 1] === newboard[j]?.[x] &&
-          isMerge[j]?.[x + 1] === 0
-        ) {
-          newboard = setTail(
-            newboard,
-            j,
-            x + 1,
-            (newboard[j]?.[x + 1] as number) * 2,
-          );
-          newboard = setTail(newboard, j, x, 0);
-          isMerge = setTail(isMerge, j, x + 1, 1);
-        }
-      }
-    }
-    return newboard;
-  }
-
-  function moveUp(grid: BoardType): BoardType {
-    let newboard = grid.map((line) => [...line]);
-    let isMerge = Array(4)
-      .fill(0)
-      .map(() => Array<number>(4).fill(0));
-    for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 4; j++) {
-        if (newboard[i]?.[j] === 0) continue;
-        let y = i;
-
-        // 0 안나올 때까지 위쪽으로 한칸씩
-        while (y > 0 && newboard[y - 1]?.[j] === 0) {
-          newboard = setTail(newboard, y - 1, j, newboard[y]?.[j] as number);
-          newboard = setTail(newboard, y, j, 0);
-          y--;
-        }
-
-        // 합치기 단계 (합쳐진 곳에서 안합쳐지도록)
-        if (
-          y > 0 &&
-          newboard[y - 1]?.[j] === newboard[y]?.[j] &&
-          isMerge[y - 1]?.[j] === 0
-        ) {
-          newboard = setTail(
-            newboard,
-            y - 1,
-            j,
-            (newboard[y - 1]?.[j] as number) * 2,
-          );
-          newboard = setTail(newboard, y, j, 0);
-          isMerge = setTail(isMerge, y - 1, j, 1);
-        }
-      }
-    }
-    return newboard;
-  }
-
-  function moveDown(grid: BoardType): BoardType {
-    let newboard = grid.map((line) => [...line]);
-    let isMerge = Array(4)
-      .fill(0)
-      .map(() => Array<number>(4).fill(0));
-    for (let i = 3; i >= 0; i--) {
-      for (let j = 0; j < 4; j++) {
-        if (newboard[i]?.[j] === 0) continue;
-        let y = i;
-
-        // 0 안나올 때까지 아래쪽으로 한칸씩
-        while (y < 3 && newboard[y + 1]?.[j] === 0) {
-          newboard = setTail(newboard, y + 1, j, newboard[y]?.[j] as number);
-          newboard = setTail(newboard, y, j, 0);
-          y++;
-        }
-
-        // 합치기 단계 (합쳐진 곳에서 안합쳐지도록)
-        if (
-          y < 3 &&
-          newboard[y + 1]?.[j] === newboard[y]?.[j] &&
-          isMerge[y + 1]?.[j] === 0
-        ) {
-          newboard = setTail(
-            newboard,
-            y + 1,
-            j,
-            (newboard[y + 1]?.[j] as number) * 2,
-          );
-          newboard = setTail(newboard, y, j, 0);
-          isMerge = setTail(isMerge, y + 1, j, 1);
-        }
-      }
-    }
-    return newboard;
-  }
-
-  function calculateScore(brd: BoardType): number {
-    return brd.flat().reduce((sum, cell) => sum + cell, 0);
-  }
-
-  function isWin(brd: BoardType): boolean {
-    return brd.some((row) => row.some((cell) => cell >= 128));
-  }
-
-  function isGameOver(brd: BoardType): boolean {
-    // 0이 있는지 확인 -> 있으면 게임 안끝남
-    for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 4; j++) {
-        if (brd[i]?.[j] === 0) {
-          return false;
-        }
-      }
-    }
-
-    for (let i = 0; i < 3; i++) {
-      for (let j = 0; j < 3; j++) {
-        const current = brd[i]?.[j];
-
-        if (current === brd[i]?.[j + 1]) {
-          return false;
-        }
-        if (current === brd[i + 1]?.[j]) {
-          return false;
-        }
-      }
-    }
-
-    if (brd[3]?.[3] === brd[2]?.[3] || brd[3]?.[3] === brd[3]?.[2]) {
-      return false;
-    }
-
-    return true;
-  }
 
   function restartGame() {
     setBoard(initializeBoard());
