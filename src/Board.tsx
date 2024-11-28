@@ -5,7 +5,7 @@ type BoardType = {
 
 const Board = ({ board }: BoardType) => {
   return (
-    <div className="board">
+    <div className="grid grid-cols-4 gap-4 bg-blue-400 rounded-lg p-4">
       {board.map((row: number[], i: number) =>
         row.map((value, j) => <Tile key={`${i}-${j}`} value={value} />),
       )}
